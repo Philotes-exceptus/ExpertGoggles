@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/visual"
+        app:layout_constraintEnd_toEndOf="@+id/text"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/text"
+        app:layout_constraintTop_toBottomOf="@+id/text"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/back"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/audio"
+        android:layout_width="208dp"
+        android:layout_height="83dp"
+        android:onClick="audio_functionality"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/visual"
+        app:layout_constraintEnd_toEndOf="@+id/text"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/text"
+        app:layout_constraintTop_toBottomOf="@+id/text"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/button"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/visual"
+        android:layout_width="208dp"
+        android:layout_height="83dp"
+        android:onClick="visual_functionality"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/audio"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/audio"
+        app:layout_constraintTop_toBottomOf="@+id/audio"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/button"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/text"
+        android:layout_width="208dp"
+        android:layout_height="83dp"
+        android:onClick="text_functionality"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/audio"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/button"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/github"
+        android:layout_width="92dp"
+        android:layout_height="80dp"
+        android:onClick="githubStar"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.974"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/github"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="395dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Text"
+        android:textSize="40sp"
+        android:fontFamily="@font/shojumaru"
+        app:layout_constraintBottom_toBottomOf="@+id/text"
+        app:layout_constraintEnd_toEndOf="@+id/text"
+        app:layout_constraintStart_toStartOf="@+id/text"
+        app:layout_constraintTop_toTopOf="@+id/text" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Audio"
+        android:textSize="40sp"
+        android:fontFamily="@font/shojumaru"
+        app:layout_constraintBottom_toBottomOf="@+id/audio"
+        app:layout_constraintEnd_toEndOf="@+id/audio"
+        app:layout_constraintStart_toStartOf="@+id/audio"
+        app:layout_constraintTop_toTopOf="@+id/audio" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Visual"
+        android:textSize="40sp"
+        android:fontFamily="@font/shojumaru"
+        app:layout_constraintBottom_toBottomOf="@+id/visual"
+        app:layout_constraintEnd_toEndOf="@+id/visual"
+        app:layout_constraintStart_toStartOf="@+id/visual"
+        app:layout_constraintTop_toTopOf="@+id/visual" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
