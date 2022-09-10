@@ -2,23 +2,54 @@ package com.example.expertgoggles
 
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.widget.Button
+import android.view.View
+import android.widget.AdapterView
 import android.widget.EditText
-import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
 import com.google.firebase.database.*
 import java.util.*
+import kotlin.collections.ArrayList
+
 
 class Texting: AppCompatActivity(), TextToSpeech.OnInitListener {
     lateinit var textToSpeech: TextToSpeech
     lateinit var firebaseDatabase: FirebaseDatabase
     lateinit var databaseReference: DatabaseReference
+    private var mUserList: ArrayList<Users>? = null
+    private var mAdapter: UserListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.text)
+
+        initList();
+
+        val spinnerCountries = findViewById<Spinner>(R.id.spinner_countries)
+
+        mAdapter = UserListAdapter(this, mUserList)
+        spinnerCountries.adapter = mAdapter
+
+        spinnerCountries.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val clickedItem: Users = parent.getItemAtPosition(position) as  Users
+                val clickedCountryName: String? = clickedItem.getName()
+                Toast.makeText(
+                    this@Texting,
+                    "$clickedCountryName selected",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
 
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.getReference()
@@ -78,4 +109,17 @@ class Texting: AppCompatActivity(), TextToSpeech.OnInitListener {
         }
         databaseReference.addListenerForSingleValueEvent((postListener))
     }
+
+    private fun initList() {
+
+        val inidividual_user = Users()
+        inidividual_user.userItem("me",R.drawable.cloud2)
+
+        mUserList = ArrayList()
+        mUserList!!.add(inidividual_user)
+        mUserList!!.add(inidividual_user)
+        mUserList!!.add(inidividual_user)
+
+    }
+
 }

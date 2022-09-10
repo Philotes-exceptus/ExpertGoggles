@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@drawable/cloud2"
     tools:context=".MainActivity">
 
 
@@ -20,7 +21,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/microphone" />
+        app:srcCompat="@drawable/microphone"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/stopRecord"
@@ -63,6 +65,30 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/startPlaying"
         app:layout_constraintTop_toBottomOf="@+id/startPlaying" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="73dp"
+        android:layout_height="65dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintStart_toStartOf="@+id/stopPlaying"
+        app:layout_constraintTop_toTopOf="@+id/stopPlaying"
+        app:layout_constraintVertical_bias="0.921"
+        app:srcCompat="@drawable/adduser" />
+
+    <Spinner
+        android:id="@+id/spinner_countries"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="@+id/imageView2"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

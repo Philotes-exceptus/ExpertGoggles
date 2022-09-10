@@ -39,5 +39,30 @@
         app:layout_constraintVertical_bias="0.148"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="70dp"
+        android:layout_height="69dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.857"
+        app:layout_constraintStart_toStartOf="@+id/speak"
+        app:layout_constraintTop_toBottomOf="@+id/speak"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/adduser" />
+
+    <Spinner
+        android:id="@+id/spinner_countries"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
