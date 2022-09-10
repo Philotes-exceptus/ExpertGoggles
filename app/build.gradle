@@ -2,19 +2,34 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+    id 'com.chaquo.python'
+
 }
+
 
 android {
     compileSdk 32
 
     defaultConfig {
         applicationId "com.example.expertgoggles"
-        minSdk 26
+        minSdk 16
         targetSdk 32
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+        python {
+            buildPython "C:/Users/Admin/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Python 3.8/Python(64).exe"
+        }
+
+        sourceSets {
+            main {
+                python.srcDir "src/main/python"
+            }
+        }
     }
 
     buildTypes {
