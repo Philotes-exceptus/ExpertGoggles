@@ -3,15 +3,11 @@ package com.example.expertgoggles
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.view.View
-import android.widget.AdapterView
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
 import com.google.firebase.database.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class Texting: AppCompatActivity(), TextToSpeech.OnInitListener {
@@ -19,37 +15,41 @@ class Texting: AppCompatActivity(), TextToSpeech.OnInitListener {
     lateinit var firebaseDatabase: FirebaseDatabase
     lateinit var databaseReference: DatabaseReference
     private var mUserList: ArrayList<Users>? = null
-    private var mAdapter: UserListAdapter? = null
+    lateinit var tutorialsName : String
+
+    var countryNames = arrayOf("India", "China", "Australia", "Portugle")
+    var flags = intArrayOf(
+        R.drawable.cloud2,
+        R.drawable.adduser,
+        R.drawable.cloud2,
+        R.drawable.adduser
+
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.text)
 
-        initList();
+        val spin = findViewById<View>(R.id.spinner) as Spinner
 
-        val spinnerCountries = findViewById<Spinner>(R.id.spinner_countries)
 
-        mAdapter = UserListAdapter(this, mUserList)
-        spinnerCountries.adapter = mAdapter
-
-        spinnerCountries.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        val customAdapter = CustomAdapter(applicationContext, flags, countryNames)
+        spin.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
-                view: View?,
+                view: View,
                 position: Int,
                 id: Long
             ) {
-                val clickedItem: Users = parent.getItemAtPosition(position) as  Users
-                val clickedCountryName: String? = clickedItem.getName()
-                Toast.makeText(
-                    this@Texting,
-                    "$clickedCountryName selected",
-                    Toast.LENGTH_SHORT
-                ).show()
+                 tutorialsName = countryNames[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
+
         }
+
+        spin.adapter = customAdapter
+
 
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.getReference()
@@ -85,6 +85,8 @@ class Texting: AppCompatActivity(), TextToSpeech.OnInitListener {
         val mtext= feed.text.toString()
         val user =userText()
         user.setText(mtext)
+        user.setUserName("Aditya")
+        user.setUserStatus("b")
 
         // we are use add value event listener method
         // which is called with database reference.

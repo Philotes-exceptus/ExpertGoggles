@@ -4,112 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
     android:background="@drawable/cloud2"
     tools:context=".MainActivity">
 
-
-    <ImageButton
-        android:id="@+id/startRecord"
-        android:layout_width="137dp"
-        android:layout_height="108dp"
-        android:layout_marginTop="10dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@+id/stopRecord"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/microphone"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/stopRecord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="Stop recording"
-        android:textAllCaps="false"
-        android:textSize="19sp"
-        app:layout_constraintBottom_toTopOf="@+id/startPlaying"
-        app:layout_constraintEnd_toEndOf="@+id/startRecord"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/startRecord"
-        app:layout_constraintTop_toBottomOf="@+id/startRecord" />
-
-    <Button
-        android:id="@+id/startPlaying"
-        android:layout_width="180dp"
-        android:layout_height="50dp"
-        android:layout_margin="8dp"
-        android:text="Start playing"
-        android:textAllCaps="false"
-        android:textSize="19sp"
-        app:layout_constraintBottom_toTopOf="@+id/stopPlaying"
-        app:layout_constraintEnd_toEndOf="@+id/stopRecord"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/stopRecord"
-        app:layout_constraintTop_toBottomOf="@+id/stopRecord" />
-
-    <Button
-        android:id="@+id/stopPlaying"
-        android:layout_width="180dp"
-        android:layout_height="50dp"
-        android:layout_margin="8dp"
-        android:text="Stop playing"
-        android:textAllCaps="false"
-        android:textSize="19sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/startPlaying"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/startPlaying"
-        app:layout_constraintTop_toBottomOf="@+id/startPlaying" />
-
     <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="73dp"
-        android:layout_height="65dp"
+        android:id="@+id/button"
+        android:layout_width="103dp"
+        android:layout_height="123dp"
+        android:backgroundTint="#F9F8FA"
+        android:paddingRight="10dp"
+        android:src="@drawable/microphone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.927"
-        app:layout_constraintStart_toStartOf="@+id/stopPlaying"
-        app:layout_constraintTop_toTopOf="@+id/stopPlaying"
-        app:layout_constraintVertical_bias="0.921"
-        app:srcCompat="@drawable/adduser" />
+        app:layout_constraintEnd_toEndOf="@+id/text"
+        app:layout_constraintStart_toStartOf="@+id/text"
+        app:layout_constraintTop_toBottomOf="@+id/text" />
 
-    <Spinner
-        android:id="@+id/spinner_countries"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintEnd_toEndOf="@+id/imageView2"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="@+id/imageView2"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        android:layout_marginTop="150dp"
+        android:hint="Tap to Speak"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-16dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

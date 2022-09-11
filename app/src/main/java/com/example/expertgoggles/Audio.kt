@@ -1,169 +1,93 @@
 package com.example.expertgoggles
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.MediaPlayer
-import android.media.MediaRecorder
-import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.os.Environment
+import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
-import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
+import android.speech.SpeechRecognizer
+import android.view.MotionEvent
+import android.view.View.OnTouchListener
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
-import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.database.*
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import java.io.IOException
 import java.util.*
 
 
 class Audio : AppCompatActivity() {
-
-    private var mediaRecorder: MediaRecorder? = null
-    private var mediaPlayer: MediaPlayer? = null
-    private var AudioSavaPath: String? = null
-    lateinit var st : StorageReference
+    private lateinit var speechRecognizer: SpeechRecognizer
+    private lateinit var editText: EditText
+    private lateinit var micButton: ImageView
     lateinit var firebaseDatabase: FirebaseDatabase
     lateinit var databaseReference: DatabaseReference
-    private val REQUEST_CODE_SPEECH_INPUT = 1
-    lateinit var convertedText : String
-    @SuppressLint("ClickableViewAccessibility")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.audio)
-
-         var StartRecording: ImageButton? = null
-         var StopRecording: Button? = null
-         var StartPlaying: Button? = null
-         var StopPlaying: Button? = null
-
-        StartRecording = findViewById(R.id.startRecord)
-        StopRecording = findViewById(R.id.stopRecord)
-        StartPlaying = findViewById(R.id.startPlaying)
-        StopPlaying = findViewById(R.id.stopPlaying)
-
-        st = FirebaseStorage.getInstance().getReference()
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("audio")
-
-//        StartRecording.setOnTouchListener(OnTouchListener { v, event ->
-//            if (event.action == MotionEvent.ACTION_DOWN) {
-//            recordAudio()
-//            }
-//
-//            if (event.action == MotionEvent.ACTION_UP) {
-//                recordAudio()
-//            }
-//
-//            return@OnTouchListener false
-//        })
-
-        StartRecording.setOnClickListener(View.OnClickListener {
-            recordAudio()
-
-            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-            intent.putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-            intent.putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE,
-                Locale.getDefault()
-            )
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to text")
-
-            try {
-                startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT)
-            } catch (e: Exception) {
-                Toast
-                    .makeText(
-                        this@Audio, " " + e.message,
-                        Toast.LENGTH_SHORT
-                    )
-                    .show()
-            }
-
-        })
-        StopRecording.setOnClickListener(View.OnClickListener {
-            stopRecord()
-
-            storeAudio()
-
-        })
-        StartPlaying.setOnClickListener(View.OnClickListener {
-            mediaPlayer = MediaPlayer()
-            try {
-                mediaPlayer!!.setDataSource(AudioSavaPath)
-                mediaPlayer!!.prepare()
-                mediaPlayer!!.start()
-
-
-
-
-                Toast.makeText(this@Audio, "Start playing", Toast.LENGTH_SHORT).show()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        })
-        StopPlaying.setOnClickListener(View.OnClickListener {
-
-            mediaPlayer?.stop();
-            mediaPlayer?.release();
-            Toast.makeText(this, "Stopped playing", Toast.LENGTH_SHORT).show();
-        })
-    }
-
-    override fun onActivityResult(
-        requestCode: Int, resultCode: Int,
-        @Nullable data: Intent?
-    ) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_SPEECH_INPUT) {
-            if (resultCode == RESULT_OK && data != null) {
-                val result = data.getStringArrayListExtra(
-                    RecognizerIntent.EXTRA_RESULTS
-                )
-//                tv_Speech_to_text.setText(
-//                    Objects.requireNonNull(result)[0]
-                            convertedText= Objects.requireNonNull(result)!![0]
-
-            }
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            checkPermission()
         }
-    }
-
-    private fun checkPermissions(): Boolean {
-        val first = ActivityCompat.checkSelfPermission(
-            applicationContext,
-            Manifest.permission.RECORD_AUDIO
+        editText = findViewById(R.id.text)
+        micButton = findViewById(R.id.button)
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
+        val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        speechRecognizerIntent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
         )
-        val second = ActivityCompat.checkSelfPermission(
-            applicationContext,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-        return first == PackageManager.PERMISSION_GRANTED &&
-                second == PackageManager.PERMISSION_GRANTED
-    }
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        speechRecognizer.setRecognitionListener(object : RecognitionListener {
+            override fun onReadyForSpeech(bundle: Bundle) {}
+            override fun onBeginningOfSpeech() {
+                editText.setText("")
+                editText.setHint("Listening...")
+            }
 
-    fun storeAudio()
-    {
+            override fun onRmsChanged(v: Float) {}
+            override fun onBufferReceived(bytes: ByteArray) {}
+            override fun onEndOfSpeech() {}
+            override fun onError(i: Int) {}
+            override fun onResults(bundle: Bundle) {
+                micButton.setImageResource(R.drawable.microphone)
+                val data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                editText.setText(data!![0])
+            }
 
-        val user =userAudio()
-        user.setText(convertedText)
+            override fun onPartialResults(bundle: Bundle) {}
+            override fun onEvent(i: Int, bundle: Bundle) {}
+        })
+        micButton.setOnTouchListener(OnTouchListener { view, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_UP) {
+                speechRecognizer.stopListening()
+            }
+            if (motionEvent.action == MotionEvent.ACTION_DOWN) {
+                micButton.setImageResource(R.drawable.microphone)
+                speechRecognizer.startListening(speechRecognizerIntent)
+            }
+            false
+        })
 
-//        val uri : Uri = Uri.parse(AudioSavaPath)
-//        val filepath : StorageReference = st.child("audio").child(uri.lastPathSegment!!)
-//        filepath.putFile(uri).addOnSuccessListener { instanceIdResult ->
-//            //good
-//            databaseReference.push().setValue(filepath)
-//        }
 
+
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        databaseReference = firebaseDatabase.getReference()
+
+        var feed: EditText = findViewById(R.id.text)
+        val convertedString : String = feed.text.toString()
+        val userAudio =userAudio()
+        userAudio.setText(convertedString)
+        userAudio.setUserName("Aditya")
+        userAudio.setUserStatus("b")
 
         // we are use add value event listener method
         // which is called with database reference.
@@ -173,7 +97,7 @@ class Audio : AppCompatActivity() {
                 // inside the method of on Data change we are setting
                 // our object class to our database reference.
                 // data base reference will sends data to firebase.
-                databaseReference.push().setValue(user)
+                databaseReference.push().setValue(userAudio)
 
                 // after adding this data we are showing toast message.
                 Toast.makeText(this@Audio, "added", Toast.LENGTH_SHORT).show()
@@ -188,43 +112,39 @@ class Audio : AppCompatActivity() {
         }
         databaseReference.addListenerForSingleValueEvent((postListener))
 
-
     }
 
-    fun recordAudio()
-    {
-        if (checkPermissions() == true) {
-            AudioSavaPath = (Environment.getExternalStorageDirectory().absolutePath
-                    + "/" + "recordingAudio.mp3")
-            mediaRecorder = MediaRecorder()
-            mediaRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
-            mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-            mediaRecorder!!.setOutputFile(AudioSavaPath)
-            try {
-                mediaRecorder!!.prepare()
-                mediaRecorder!!.start()
-                Toast.makeText(this@Audio, "Recording started", Toast.LENGTH_SHORT)
-                    .show()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        } else {
+    override fun onDestroy() {
+        super.onDestroy()
+        speechRecognizer!!.destroy()
+    }
+
+    private fun checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ActivityCompat.requestPermissions(
-                this@Audio, arrayOf(
-                    Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ), 1
+                this,
+                arrayOf(Manifest.permission.RECORD_AUDIO),
+                RecordAudioRequestCode
             )
         }
     }
 
-    fun stopRecord()
-    {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == RecordAudioRequestCode && grantResults.size > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) Toast.makeText(
+                this,
+                "Permission Granted",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
-        mediaRecorder!!.stop()
-        mediaRecorder!!.release()
-
-        Toast.makeText(this@Audio, "Recording stopped", Toast.LENGTH_SHORT).show()
-
+    companion object {
+        const val RecordAudioRequestCode = 1
     }
 }
