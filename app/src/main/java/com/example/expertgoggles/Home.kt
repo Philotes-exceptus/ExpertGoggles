@@ -42,7 +42,7 @@ class Home : AppCompatActivity() {
                 id: Long
             ) {
                 tutorialsName = parent.getItemAtPosition(position).toString()
-                
+
                 if(tutorialsName=="Dhaiya")
                 {receiveBlind()}
                 else

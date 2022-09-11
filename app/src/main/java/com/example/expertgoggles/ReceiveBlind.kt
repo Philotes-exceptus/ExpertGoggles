@@ -8,6 +8,10 @@ import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
 import com.google.firebase.database.*
+import com.google.firebase.database.core.Context
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -32,14 +36,18 @@ class ReceiveBlind : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         getdata();
 
-
-        textToSpeech = TextToSpeech(this,this)
-        var btn: LottieAnimationView = findViewById(R.id.speak)
-        btn.setOnClickListener {
+        val context : android.content.Context = this.baseContext
+//        GlobalScope.launch {
 
 
-            textToSpeech.speak(feed, TextToSpeech.QUEUE_FLUSH, null)
-        }
+            textToSpeech = TextToSpeech(this,this)
+            var btn: LottieAnimationView = findViewById(R.id.speak)
+            btn.setOnClickListener {
+
+
+                textToSpeech.speak("hello", TextToSpeech.QUEUE_FLUSH, null)
+            }
+
 
     }
 
@@ -54,8 +62,8 @@ class ReceiveBlind : AppCompatActivity(), TextToSpeech.OnInitListener {
 
                 for (child in snapshot.getChildren()) {
                     //Log.i("gul", child.key!!)
-                    Log.d("gul", "Value is: ${snapshot.getValue()}")
-
+                    Log.d("gul", "Value is: ${snapshot.child("/-NBfje7nP0PZS6Ubj267/text").getValue()}")
+                    feed = (snapshot.child("/-NBfje7nP0PZS6Ubj267/text").getValue()).toString()
                 }
 //                val value = snapshot.getValue(String::class.java)
 //                if (value != null) {

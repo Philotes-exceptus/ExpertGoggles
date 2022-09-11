@@ -3,6 +3,7 @@ package com.example.expertgoggles
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +13,7 @@ import java.util.*
 
 class ReceiveDumb : AppCompatActivity() {
 
-
+    lateinit var tt4 : TextView
     var firebaseDatabase: FirebaseDatabase? = null
     var databaseReference: DatabaseReference? = null
     lateinit var feed : String
@@ -27,6 +28,8 @@ class ReceiveDumb : AppCompatActivity() {
         // reference for our database.
         databaseReference = firebaseDatabase!!.getReference();
 
+        tt4 = findViewById(R.id.textView4)
+
         getdata();
 
     }
@@ -40,8 +43,8 @@ class ReceiveDumb : AppCompatActivity() {
             override fun onDataChange(@NonNull snapshot: DataSnapshot) {
 
                 for (child in snapshot.getChildren()) {
-                    child.key?.let { Log.i(TAG, it) }
-                    child.getValue(String::class.java)?.let { Log.i(TAG, it) }
+                    Log.d("gul", "Value is: ${snapshot.child("/-NBflM4VFAmCgZl9SOLQ/text").getValue()}")
+                    tt4.text=(snapshot.child("/-NBflM4VFAmCgZl9SOLQ/text").getValue()).toString()
                 }
 
 //                val value = snapshot.getValue(String::class.java)
