@@ -42,8 +42,7 @@ class Home : AppCompatActivity() {
                 id: Long
             ) {
                 tutorialsName = parent.getItemAtPosition(position).toString()
-                Toast.makeText(parent.context, "Selected: $tutorialsName", Toast.LENGTH_LONG).show()
-
+                
                 if(tutorialsName=="Dhaiya")
                 {receiveBlind()}
                 else
