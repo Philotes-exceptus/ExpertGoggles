@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.ImageView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
+import java.util.ArrayList
 
 class Home : AppCompatActivity() {
+
+    lateinit var tutorialsName : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +23,55 @@ class Home : AppCompatActivity() {
         val visual = findViewById<LottieAnimationView>(R.id.visual)
         val text = findViewById<LottieAnimationView>(R.id.text)
 
+
+        val spinner = findViewById<Spinner>(R.id.selectspinner)
+        val arrayList: ArrayList<String> = ArrayList()
+        arrayList.add("Vikram")
+        arrayList.add("Dhaiya")
+        arrayList.add("Ravindra")
+        arrayList.add("Kamakshi")
+
+        val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrayList)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = arrayAdapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                tutorialsName = parent.getItemAtPosition(position).toString()
+                Toast.makeText(parent.context, "Selected: $tutorialsName", Toast.LENGTH_LONG).show()
+
+                if(tutorialsName=="Dhaiya")
+                {receiveBlind()}
+                else
+                    if(tutorialsName=="Ravindra")
+                    {receiveDumb()}
+                    else
+                        if(tutorialsName=="Kamakshi")
+                    {}
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+
+    }
+
+    fun receiveBlind()
+    {
+        val audioIntent = Intent(this, ReceiveBlind::class.java)
+        startActivity(audioIntent)
+
+    }
+
+    fun receiveDumb()
+    {
+        val audioIntent = Intent(this, ReceiveDumb::class.java)
+        startActivity(audioIntent)
 
     }
 

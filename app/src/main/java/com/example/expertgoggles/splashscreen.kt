@@ -1,16 +1,16 @@
 package com.example.expertgoggles
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
-
-class Receive : AppCompatActivity() {
+class splashscreen : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.home_screen)
+        setContentView(R.layout.splash)
 
-        
+        val sIntent = Intent(this, Home::class.java)
+        startActivity(sIntent)
     }
-
-    }
+}
